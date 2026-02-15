@@ -1,0 +1,7 @@
+discord.py
+aiohttp
+aiosqlite
+tenacity
+fastapi
+uvicorn
+python-dotenv
