@@ -387,21 +387,21 @@ class BountyBot(discord.Client):
         color = discord.Color.green()
         
         embed = discord.Embed(
-            title=f"💰 {title}",
+            title=f"{title}",
             description=description,
             url=url if url else None,
             timestamp=datetime.utcnow(),
             color=color
         )
         
-        embed.add_field(name="📍 Location", value=location, inline=True)
-        embed.add_field(name="💵 Reward", value=reward, inline=True)
-        embed.add_field(name="⏰ Deadline", value=deadline, inline=True)
+        embed.add_field(name="Location", value=location, inline=True)
+        embed.add_field(name="Reward", value=reward, inline=True)
+        embed.add_field(name="Deadline", value=deadline, inline=True)
         
         # Add skills if available
         if "skills" in bounty and bounty["skills"]:
             skills = ", ".join(bounty["skills"][:5])
-            embed.add_field(name="🛠️ Skills", value=skills, inline=False)
+            embed.add_field(name="Skills", value=skills, inline=False)
         
         embed.set_footer(text="RentAHuman Bounty Alert")
         
@@ -416,7 +416,7 @@ def has_manage_guild():
     async def predicate(interaction: discord.Interaction) -> bool:
         if not interaction.user.guild_permissions.manage_guild:
             await interaction.response.send_message(
-                "❌ You need 'Manage Server' permission to use this command.",
+                "You need 'Manage Server' permission to use this command.",
                 ephemeral=True
             )
             return False
@@ -430,14 +430,14 @@ async def setchannel(interaction: discord.Interaction, channel: discord.TextChan
     try:
         await bot.db.set_channel(str(interaction.guild_id), str(channel.id))
         await interaction.response.send_message(
-            f"✅ Notification channel set to {channel.mention}",
+            f"Notification channel set to {channel.mention}",
             ephemeral=True
         )
         logger.info(f"Channel set for guild {interaction.guild_id}: {channel.id}")
     except Exception as e:
         logger.error(f"Error setting channel: {e}")
         await interaction.response.send_message(
-            "❌ Failed to set channel. Please try again.",
+            "Failed to set channel. Please try again.",
             ephemeral=True
         )
 
@@ -449,7 +449,7 @@ async def subscribe(interaction: discord.Interaction, keyword: str):
         channel_id = await bot.db.get_channel(str(interaction.guild_id))
         if not channel_id:
             await interaction.response.send_message(
-                "⚠️ Please set a notification channel first using `/setchannel`",
+                "Please set a notification channel first using \`/setchannel\`",
                 ephemeral=True
             )
             return
@@ -458,19 +458,19 @@ async def subscribe(interaction: discord.Interaction, keyword: str):
         
         if added:
             await interaction.response.send_message(
-                f"✅ Subscribed to bounties in **{keyword}**",
+                f"Subscribed to bounties in **{keyword}**",
                 ephemeral=True
             )
             logger.info(f"Guild {interaction.guild_id} subscribed to '{keyword}'")
         else:
             await interaction.response.send_message(
-                f"ℹ️ Already subscribed to **{keyword}**",
+                f"Already subscribed to **{keyword}**",
                 ephemeral=True
             )
     except Exception as e:
         logger.error(f"Error subscribing: {e}")
         await interaction.response.send_message(
-            "❌ Failed to subscribe. Please try again.",
+            "Failed to subscribe. Please try again.",
             ephemeral=True
         )
 
@@ -481,14 +481,14 @@ async def unsubscribe(interaction: discord.Interaction, keyword: str):
     try:
         await bot.db.remove_subscription(str(interaction.guild_id), keyword)
         await interaction.response.send_message(
-            f"✅ Unsubscribed from **{keyword}**",
+            f"Unsubscribed from **{keyword}**",
             ephemeral=True
         )
         logger.info(f"Guild {interaction.guild_id} unsubscribed from '{keyword}'")
     except Exception as e:
         logger.error(f"Error unsubscribing: {e}")
         await interaction.response.send_message(
-            "❌ Failed to unsubscribe. Please try again.",
+            "Failed to unsubscribe. Please try again.",
             ephemeral=True
         )
 
@@ -500,19 +500,19 @@ async def subscriptions(interaction: discord.Interaction):
         
         if not keywords:
             await interaction.response.send_message(
-                "📭 No active subscriptions.\nUse `/subscribe` to add one!",
+                "No active subscriptions.\nUse \`/subscribe\` to add one!",
                 ephemeral=True
             )
         else:
             keyword_list = "\n".join([f"• {kw}" for kw in keywords])
             await interaction.response.send_message(
-                f"📍 **Active subscriptions:**\n{keyword_list}",
+                f"**Active subscriptions:**\n{keyword_list}",
                 ephemeral=True
             )
     except Exception as e:
         logger.error(f"Error listing subscriptions: {e}")
         await interaction.response.send_message(
-            "❌ Failed to retrieve subscriptions.",
+            "Failed to retrieve subscriptions.",
             ephemeral=True
         )
 
@@ -527,20 +527,20 @@ async def status(interaction: discord.Interaction):
             channel = bot.get_channel(int(channel_id))
             channel_mention = channel.mention if channel else f"<#{channel_id}>"
         else:
-            channel_mention = "❌ Not set"
+            channel_mention = "Not set"
         
-        mode = "🧪 Mock API (Testing)" if config.use_mock_api else "🚀 Production API"
+        mode = "Mock API (Testing)" if config.use_mock_api else "Production API"
         
         embed = discord.Embed(
-            title="🤖 Bot Status",
+            title="Bot Status",
             color=discord.Color.blue(),
             timestamp=datetime.utcnow()
         )
         
-        embed.add_field(name="📢 Notification Channel", value=channel_mention, inline=False)
-        embed.add_field(name="📍 Active Subscriptions", value=f"{len(keywords)} location(s)" if keywords else "None", inline=False)
-        embed.add_field(name="🔄 Poll Interval", value=f"{config.poll_interval} seconds", inline=True)
-        embed.add_field(name="🌐 API Mode", value=mode, inline=True)
+        embed.add_field(name="Notification Channel", value=channel_mention, inline=False)
+        embed.add_field(name="Active Subscriptions", value=f"{len(keywords)} location(s)" if keywords else "None", inline=False)
+        embed.add_field(name="Poll Interval", value=f"{config.poll_interval} seconds", inline=True)
+        embed.add_field(name="API Mode", value=mode, inline=True)
         embed.set_footer(text=f"Bot latency: {round(bot.latency * 1000)}ms")
         
         await interaction.response.send_message(embed=embed, ephemeral=True)
@@ -548,7 +548,7 @@ async def status(interaction: discord.Interaction):
     except Exception as e:
         logger.error(f"Error showing status: {e}")
         await interaction.response.send_message(
-            "❌ Failed to retrieve status.",
+            "Failed to retrieve status.",
             ephemeral=True
         )
 
@@ -556,9 +556,9 @@ async def status(interaction: discord.Interaction):
 
 if __name__ == "__main__":
     try:
-        logger.info("🤖 Starting Bounty Bot...")
-        logger.info(f"📡 API Mode: {'MOCK (Testing)' if config.use_mock_api else 'PRODUCTION'}")
-        logger.info(f"🔗 API URL: {config.api_url}")
+        logger.info("Starting Bounty Bot...")
+        logger.info(f"API Mode: {'MOCK (Testing)' if config.use_mock_api else 'PRODUCTION'}")
+        logger.info(f"API URL: {config.api_url}")
         bot.run(config.discord_token)
     except KeyboardInterrupt:
         logger.info("Bot stopped by user")

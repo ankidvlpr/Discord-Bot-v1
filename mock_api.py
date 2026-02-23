@@ -177,10 +177,10 @@ def health_check():
     }
 
 if __name__ == "__main__":
-    print("🚀 Starting Mock RentAHuman API Server")
-    print("📍 API will be available at: http://localhost:8000")
-    print("📚 Documentation at: http://localhost:8000/docs")
-    print("🎯 Test endpoint: http://localhost:8000/bounties")
+    print("Starting Mock RentAHuman API Server")
+    print("API will be available at: http://localhost:8000")
+    print("Documentation at: http://localhost:8000/docs")
+    print("Test endpoint: http://localhost:8000/bounties")
     print("\nPress Ctrl+C to stop")
     
     uvicorn.run(app, host="0.0.0.0", port=8000)
