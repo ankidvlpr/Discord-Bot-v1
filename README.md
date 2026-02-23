@@ -40,7 +40,7 @@ docker-compose logs -f
 
 ---
 
-## 📱 Discord Commands
+##  Discord Commands
 
 ```
 /setchannel #bounties           Set notification channel
@@ -99,7 +99,7 @@ Done! Bot now uses real data.
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 ```
 ┌─────────────────┐      ┌──────────────────┐
